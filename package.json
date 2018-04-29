@@ -1,0 +1,17 @@
+{
+  "name": "portfolio_app",
+  "version": "1.0.0",
+  "description": "Portfolio App",
+  "main": "main.js",
+  "dependencies": {
+    "electron": "^1.8.6"
+  },
+  "devDependencies": {
+    "electron": "^1.8.6"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Łukasz Kosmaty",
+  "license": "ISC"
+}
