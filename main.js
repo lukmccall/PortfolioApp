@@ -1,9 +1,10 @@
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
-const url = require('url')
+const {app, BrowserWindow} = require('electron');
+const path = require('path');
+const url = require('url');
 
+let win;
 
-let win
+process.env.root = __dirname; // set root patch
 
 function createWindow () {
 
@@ -36,4 +37,4 @@ app.on('activate', () => {
     if (win === null) {
         createWindow();
     }
-})
+});
