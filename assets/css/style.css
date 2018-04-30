@@ -1,0 +1,11 @@
+.sidenav-trigger{
+    display: block!important;
+}
+
+.nav{
+    background: #2C3E50;
+}
+
+.nav .brand-logo{
+    padding-left: 20px;
+}

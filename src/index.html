@@ -4,10 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Main</title>
+    <link rel="stylesheet" href="../assets/materialize/css/materialize.min.css">
+    <link rel="stylesheet" href="../assets//materialize//fonts/material-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <h1>Hi</h1>
-    <script src="js/index.js"></script>
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <a href="#user"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li>
+            <a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a>
+        </li>
+        <li>
+            <a href="#!">Second Link</a>
+        </li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li>
+            <a class="subheader">Subheader</a>
+        </li>
+        <li>
+            <a class="waves-effect" href="#!">Third Link With Waves</a>
+        </li>
+    </ul>
+
+    <nav class="nav">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo left"><i class="material-icons">cloud</i>Logo</a>
+            <ul class="right">
+                <!-- <li><a href="#"><i class="material-icons">search</i></a></li>
+                <li><a href="#"><i class="material-icons">view_module</i></a></li> -->
+                <li><a href="#" class="lang-trigger"><i class="material-icons">language</i></a></li>
+                <li><a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- page content -->
+    <div class="row">
+        <div class="col s12"> 
+            <h1></h1>
+        </div>
+    </div>   
+
 </body>
+    <!-- 3rd-party libraries include  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        <script src="../assets/jquery/jquery.min.js"></script>
+        <script src="../assets/materialize/js/materialize.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+    
+    <!-- This frame js -->
+    <script src="app/index.js"></script>
 </html>

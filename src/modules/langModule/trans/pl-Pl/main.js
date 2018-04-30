@@ -1,6 +1,6 @@
-let lang = {
+const pl = {
     help: "pomoc",
     menu: "menu"
 }
 
-module.exports = lang;
+module.exports = pl;

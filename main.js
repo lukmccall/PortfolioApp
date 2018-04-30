@@ -4,11 +4,14 @@ const url = require('url');
 
 let win;
 
+global.lang = app.getLocale(); // set default lang
+if( global.lang != "pl" || global.lang != "en" ) global.lang = "pl";
+
 process.env.root = __dirname; // set root patch
 
 function createWindow () {
-
-    win = new BrowserWindow({width: 800, height: 600});
+    
+    win = new BrowserWindow({width: 1200, height: 800});
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'src/index.html'),
