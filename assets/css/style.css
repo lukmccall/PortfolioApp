@@ -1,3 +1,11 @@
+html,body{ 
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
 .sidenav-trigger{
     display: block!important;
 }
@@ -8,4 +16,14 @@
 
 .nav .brand-logo{
     padding-left: 20px;
+}
+
+
+#main{
+    position: absolute;
+    left: 0;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+
 }

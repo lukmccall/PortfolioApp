@@ -1,17 +1,24 @@
 const { remote } = require('electron');
 const main = remote.require("./main.js"); // get  main proccess
 const { ipcRenderer } = require('electron');
+const fs = require('fs');
 
+let site = 'gravity'; // actual frame name 
+let game;
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
 let render = ( )=>{
+    $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
+    
     $('.trans').each(function( key, x ){
         $(x).text( lang.trans($(x).data("trans"), remote.getGlobal('lang')) );
     });
+
+    game();
 };
 
+
 $(document).ready(function(){
-    render();
     $('.sidenav').sidenav(); // sidenav init
 
     //----------------------------------------- change lang modal
@@ -33,6 +40,7 @@ $(document).ready(function(){
         });        
     });
 
+    render();
    // $('.lang-trigger').click();
 });
 
