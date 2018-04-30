@@ -1,6 +1,7 @@
 const pl = {
     help: "pomoc",
-    menu: "menu"
+    menu: "menu",
+    close: 'zamknij'
 }
 
 module.exports = pl;

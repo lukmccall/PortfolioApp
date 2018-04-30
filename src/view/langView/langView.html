@@ -35,6 +35,7 @@
             }
 
             body {
+                -webkit-app-region: drag;
                 background-color: #2C3E50;
             }
 
@@ -50,10 +51,15 @@
 
             .btn{
                 background-color: #E74C3C;
+                -webkit-app-region: no-drag;
             }
 
             .btn:hover{
                 background-color: rgb(201, 64, 49);
+            }
+
+            .pl,.en{
+                -webkit-app-region: no-drag;    
             }
             
             .pl:after, .en:after {
@@ -63,7 +69,7 @@
                 left:0;
                 right: 0;
                 bottom: 0;
-                
+
                 background:rgba(0,0,0,0.6);
                 opacity: 0;
                 transition: opacity 0.5s;
@@ -81,15 +87,18 @@
     <div class="container row">
         <div class="row">
             <div class="col s6">
-                <span class="flag-icon flag-icon-pl pl"></span>
+                <span class="flag-icon flag-icon-pl pl" data-lang="pl"></span>
             </div>
             <div class="col s6">
-                <span class="flag-icon flag-icon-en en"></span>
+                <span class="flag-icon flag-icon-en en" data-lang="en"></span>
             </div>
         </div>
   
         <div class="col s12 center-align">
-            <a class="waves-effect waves-light btn btn-large close-trigger"><i class="material-icons right">close</i>Close</a>
+            <a class="waves-effect waves-light btn btn-large close-trigger">
+                <i class="material-icons right">close</i>
+                <span class="trans" data-trans="close"></span>
+            </a>
         </div>
     </div>
 </body>

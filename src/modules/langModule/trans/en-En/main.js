@@ -1,6 +1,7 @@
 const en = {
     help: "help",
-    menu: "menu"
+    menu: "menu",
+    close: "close"
 }
 
 module.exports = en;
