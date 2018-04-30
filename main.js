@@ -41,3 +41,13 @@ app.on('activate', () => {
         createWindow();
     }
 });
+
+
+//----------------- Global method -------------------------//
+exports.getView = name => {
+    return url.format({
+        pathname: path.join(__dirname, 'src/view/', name, name+".html" ),
+        protocol: 'file:',
+        slashes: true
+    });
+};

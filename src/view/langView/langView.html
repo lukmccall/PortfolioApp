@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LangView</title>
+    
+    <link rel="stylesheet" href="../../../assets/materialize/css/materialize.min.css">
+    <link rel="stylesheet" href="../../../assets/materialize/fonts/material-icons.css">
+    
+    <style>
+        .flag-icon-background {
+                background-size: contain;
+                background-position: 50%;
+                background-repeat: no-repeat;
+            }
+            .flag-icon {
+                background-size: contain;
+                background-position: 50%;
+                background-repeat: no-repeat;
+                position: relative;
+                display: inline-block;
+                width: 1.33333333em;
+                line-height: 1em;
+            }
+            .flag-icon:before {
+                content: "\00a0";
+            }
+            .flag-icon-pl {
+                 background-image: url(flags/pl.svg);
+            }
+            .flag-icon-en {
+                background-image: url(flags/en.svg);
+            }
+
+            body {
+                background-color: #2C3E50;
+            }
+
+            .s6{
+                text-align: center;
+                font-size: 120px;
+                position: relative;
+            }
+
+            .s12{
+                margin-top: -20px;
+            }
+
+            .btn{
+                background-color: #E74C3C;
+            }
+
+            .btn:hover{
+                background-color: rgb(201, 64, 49);
+            }
+            
+            .pl:after, .en:after {
+                content: '\A';
+                position: absolute;
+                top:0; 
+                left:0;
+                right: 0;
+                bottom: 0;
+                
+                background:rgba(0,0,0,0.6);
+                opacity: 0;
+                transition: opacity 0.5s;
+                -webkit-transition: opacity 0.5s;
+                -moz-transition: opacity 0.5s;
+            }
+            .pl:hover:after,.en:hover:after {
+                opacity: 1;
+                cursor: pointer;
+            }
+
+        </style>
+</head>
+<body>
+    <div class="container row">
+        <div class="row">
+            <div class="col s6">
+                <span class="flag-icon flag-icon-pl pl"></span>
+            </div>
+            <div class="col s6">
+                <span class="flag-icon flag-icon-en en"></span>
+            </div>
+        </div>
+  
+        <div class="col s12 center-align">
+            <a class="waves-effect waves-light btn btn-large close-trigger"><i class="material-icons right">close</i>Close</a>
+        </div>
+    </div>
+</body>
+    
+    <!-- 3rd-party libraries include  -->
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+        <script src="../../../assets/jquery/jquery.min.js"></script>
+        <script src="../../../assets/materialize/js/materialize.min.js"></script>
+    <script>if (window.module) module = window.module;</script>
+
+    <!-- This frame js -->
+     <script src="langView.js"></script>
+</html>
