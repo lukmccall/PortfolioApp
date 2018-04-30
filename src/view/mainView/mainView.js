@@ -2,9 +2,12 @@ const { remote } = require('electron');
 const main = remote.require("./main.js"); // get  main proccess
 const { ipcRenderer } = require('electron');
 const fs = require('fs');
+const help = remote.require('./src/modules/helpersModule/helpersModule');
 
 let site = 'gravity'; // actual frame name 
-let game;
+let game;   // game scope
+let pause = false;  //  is pause?
+
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
 let render = ( )=>{
@@ -13,13 +16,24 @@ let render = ( )=>{
     $('.trans').each(function( key, x ){
         $(x).text( lang.trans($(x).data("trans"), remote.getGlobal('lang')) );
     });
-
-    game();
+    
+    if( typeof game === "function" )
+        game();
 };
 
 
 $(document).ready(function(){
-    $('.sidenav').sidenav(); // sidenav init
+    // init sidenav
+    let sideOption = {
+        onOpenStart: function(){
+            pause = true;
+        },
+        onCloseEnd: function(){
+            pause = false;
+        }
+    }
+    let elem = document.querySelector('.sidenav');
+    let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
     //----------------------------------------- change lang modal
     $('.lang-trigger').on('click', function(){
@@ -40,8 +54,7 @@ $(document).ready(function(){
         });        
     });
 
-    render();
-   // $('.lang-trigger').click();
+    render(); // render game view
 });
 
 ipcRenderer.on("lang-change", ( e, lang ) => {
