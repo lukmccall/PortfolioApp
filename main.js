@@ -10,7 +10,7 @@ if( global.lang != "pl" || global.lang != "en" ) global.lang = "pl";
 process.env.root = __dirname; // set root patch
 
 function createWindow () {
-    win = new BrowserWindow({width: 1200, height: 800});
+    win = new BrowserWindow({width: 1200, height: 800, show: false });
 
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'src/view/mainView/mainView.html'),
@@ -18,11 +18,15 @@ function createWindow () {
         slashes: true
     }));
 
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
 
     win.on('closed', () => {
         win = null
     });
+
+    win.once('ready-to-show', () => { // smoth open
+        win.show();
+    });        
 }
 
 app.on('ready', createWindow);

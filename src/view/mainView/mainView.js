@@ -21,6 +21,14 @@ let render = ()=>{
         game();
 };
 
+//---------------- loader function------------------------/
+function loaderOn(){
+   return $('.loader').removeClass("hidden").delay( 500 );
+}
+function loaderOff(){
+    $('.loader').addClass("hidden");
+}
+
 
 $(document).ready(function(){
     // init sidenav
@@ -56,15 +64,17 @@ $(document).ready(function(){
     
     //------------------------------ change game
     $('.game-trigger').on('click', function( e ){
-        pause = true;
-        game = null;
-        site = $(e.target).data('game');
-        render();
-        pause = false;
+    
+        sideNavInstance.close();
+        $.when( loaderOn() ).then( function(){
+            game = null;
+            site = $(e.target).data('game');
+            render();
+            loaderOff();
+        });
     });
     render(); // render game view
-
-    $('.sidenav-trigger').click();
+    loaderOff();
 });
 
 ipcRenderer.on("lang-change", ( e, lang ) => {

@@ -1,5 +1,4 @@
 game = function(){
-    alert('move');
 
 
 }
