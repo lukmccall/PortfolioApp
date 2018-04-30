@@ -5,7 +5,6 @@ html,body{
     overflow: hidden;
 }
 
-
 .sidenav-trigger{
     display: block!important;
 }
@@ -18,7 +17,6 @@ html,body{
     padding-left: 20px;
 }
 
-
 #main{
     position: absolute;
     left: 0;
@@ -26,4 +24,20 @@ html,body{
     right: 0;
     bottom: 0;
 
+}
+
+.red-text{
+    color: #E74C3C!important;
+}
+
+.dark-text{
+    color: #2C3E50!important;
+}
+
+.white-text{
+    color: #ECF0F1!important;
+}
+
+.game-trigger:hover{
+    cursor: pointer;
 }

@@ -10,13 +10,13 @@ let pause = false;  //  is pause?
 
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
-let render = ( )=>{
+let render = ()=>{
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
     $('.trans').each(function( key, x ){
         $(x).text( lang.trans($(x).data("trans"), remote.getGlobal('lang')) );
     });
-    
+
     if( typeof game === "function" )
         game();
 };
@@ -35,7 +35,7 @@ $(document).ready(function(){
     let elem = document.querySelector('.sidenav');
     let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
-    //----------------------------------------- change lang modal
+    //------------------------------ change lang modal
     $('.lang-trigger').on('click', function(){
         let langModal = new remote.BrowserWindow({
             width: 400, 
@@ -53,8 +53,18 @@ $(document).ready(function(){
             langModal.show();
         });        
     });
-
+    
+    //------------------------------ change game
+    $('.game-trigger').on('click', function( e ){
+        pause = true;
+        game = null;
+        site = $(e.target).data('game');
+        render();
+        pause = false;
+    });
     render(); // render game view
+
+    $('.sidenav-trigger').click();
 });
 
 ipcRenderer.on("lang-change", ( e, lang ) => {

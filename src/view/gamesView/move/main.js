@@ -1,0 +1,5 @@
+game = function(){
+    alert('move');
+
+
+}
