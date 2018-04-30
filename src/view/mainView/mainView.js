@@ -10,20 +10,23 @@ let pause = false;  //  is pause?
 
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
-let render = ()=>{
-    $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
-    
+let trans = ()=>{
     $('.trans').each(function( key, x ){
         $(x).text( lang.trans($(x).data("trans"), remote.getGlobal('lang')) );
     });
-
+}
+let render = ()=>{
+    $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
+    
+    trans();
     if( typeof game === "function" )
         game();
 };
 
+
 //---------------- loader function------------------------/
 function loaderOn(){
-   return $('.loader').removeClass("hidden").delay( 500 );
+   return $('.loader').removeClass("hidden").delay( 800 );
 }
 function loaderOff(){
     $('.loader').addClass("hidden");
@@ -58,6 +61,7 @@ $(document).ready(function(){
         langModal.loadURL( main.getView('langView') );
         
         langModal.once('ready-to-show', () => {
+            pause = true;
             langModal.show();
         });        
     });
@@ -77,6 +81,12 @@ $(document).ready(function(){
     loaderOff();
 });
 
+//------------------------ events
 ipcRenderer.on("lang-change", ( e, lang ) => {
-    render();
+    trans();
+});
+
+ipcRenderer.on("unpause", (e,p)=>{
+    console.log(p);
+    pause = !p;
 });

@@ -59,6 +59,12 @@ ipcMain.on('lang-change', ( e, lang ) => {
     }   
 });
 
+//unpase
+ipcMain.on('unpause', (e, p) => {
+    if( p ) win.show(); // make sure if main window is visible
+    win.send('unpause', p );
+});
+
 //----------------- Global method -------------------------//
 /*
 *   get string name - view name

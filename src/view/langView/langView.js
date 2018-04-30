@@ -11,9 +11,10 @@ let render = ( )=>{
 
 $(document).ready(function(){
     render();
+    let langView = remote.getCurrentWindow();
     //-------------------- close widnow -----------/
     $('.close-trigger').on('click',function(){
-        let langView = remote.getCurrentWindow();
+        // ipcRenderer.send('unpause', true);
         langView.close();
     });
 
@@ -22,8 +23,13 @@ $(document).ready(function(){
     for (let i = 0; i < langBtn.length; i++) {
         langBtn[i].addEventListener("click", function() {
             ipcRenderer.send("lang-change", langBtn[i].getAttribute('data-lang'));
-            let langView = remote.getCurrentWindow();
             langView.close();
         });
     }
+
+    // window close event
+    window.addEventListener('beforeunload', ()=>{
+        ipcRenderer.send('unpause', true); 
+    });
+   
 });
