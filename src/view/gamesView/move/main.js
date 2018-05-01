@@ -6,6 +6,8 @@ const c = canvas.getContext("2d");
 const gameContainer = document.getElementById("main");
 gameContainer.appendChild(canvas);
 
+//---------------- frame id
+let frameId;
 //--------------- pressed key
 let keys = [];
 //---------------- offscreen render
@@ -135,7 +137,6 @@ function init(){
 
 //----------------- frame function
 function animate( time ){
-    console.log("MOVE");
     if( !pause ){
         preRender.fillStyle = "#ECF0F1";
         preRender.fillRect(0,0, canvas.width,canvas.height);
@@ -143,13 +144,13 @@ function animate( time ){
         player.animate( keys, time );
         for( let i = 0; i < enemies.length; i++ ){
             if( enemies[ i ].isCollision( player ) )
-                restart( init, 0);
+                restart( init, Math.floor( time/100 ));
             
             enemies[i].animate();   
         }
         c.drawImage( preCanvas, 0, 0 );
     } 
-    requestAnimationFrame(animate);
+    frameId = requestAnimationFrame(animate);
 }
 
 //------------------ events
@@ -161,14 +162,18 @@ $(document).keydown( e => {
 $(document).keyup( e => {
     keys[ e.which ] = false;
 });
+
+//------------------- clear function
 clear = function(){
     $( window ).off( "resize" );
     $( document ).off( "keydown" );
     $( document ).off( "keyup" );
-    
+    enemies = null;
+    player = null;
+    window.cancelAnimationFrame( frameId );
 };
 //------------------ boot
 init();
-requestAnimationFrame(animate);
+frameId = requestAnimationFrame(animate);
 
 }

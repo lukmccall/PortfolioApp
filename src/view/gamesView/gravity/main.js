@@ -7,8 +7,12 @@ const c = canvas.getContext("2d");
 const gameContainer = document.getElementById("main");
 gameContainer.appendChild(canvas);
 
+//---------------- frame id
+let frameId;
+
+//---------------- offsreen render
 let preCanvas = document.createElement("canvas");
-let preRender = preCanvas.getContext("2d"); // pre render
+let preRender = preCanvas.getContext("2d");
 
 let Star = function(){
     this.init();
@@ -57,11 +61,12 @@ function init(){
     
     for( let i = 0; i < 80; i++ ) // creat a lot of stars
         stars.push( new Star() );
+
+    pause = false;
 }
 
 //----------------- frame function
 function animate( time ){
-    console.log("MOVE");
     if( !pause ){
         preRender.fillStyle = "#332532";
         preRender.fillRect(0,0, canvas.width,canvas.height);
@@ -71,13 +76,19 @@ function animate( time ){
 
         c.drawImage( preCanvas, 0, 0 );
     } 
-    requestAnimationFrame(animate);
+    frameId = requestAnimationFrame(animate);
 }
 
 //------------------ events
 $( window ).resize(resize);
 
+//------------------- clear function
+clear = function(){
+    $( window ).off( "resize" );
+    stars = null;
+    window.cancelAnimationFrame( frameId );
+};
 //------------------ boot
 init();
-requestAnimationFrame(animate);
+frameId = requestAnimationFrame(animate);
 }

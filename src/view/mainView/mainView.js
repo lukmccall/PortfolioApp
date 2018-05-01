@@ -13,7 +13,6 @@ let restart = function( startFunction, score, success = false ){
     $("#restart").removeClass("hidden");
     $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
     $('.restart-trigger').on('click', ()=>{
-        console.log("reset");
         startFunction();
         $("#restart").addClass("hidden");
     });
@@ -29,7 +28,10 @@ let trans = ()=>{
 let render = ()=>{
     if( typeof clear === "function" )
         clear();
-        
+
+    $(".restart-trigger").off("click");
+    $("#restart").addClass("hidden");   
+    
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
     trans();
