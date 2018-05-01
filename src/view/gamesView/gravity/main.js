@@ -10,10 +10,6 @@ gameContainer.appendChild(canvas);
 let preCanvas = document.createElement("canvas");
 let preRender = preCanvas.getContext("2d"); // pre render
 
-function randomIntFromInterval(min,max){
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
-
 let Star = function(){
     this.init();
 }

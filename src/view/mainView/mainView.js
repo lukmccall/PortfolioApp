@@ -4,10 +4,14 @@ const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const help = remote.require('./src/modules/helpersModule/helpersModule');
 
-let site = 'gravity'; // actual frame name 
+let site = 'move'; // actual frame name 
 let game;   // game scope
 let pause = false;  //  is pause?
-
+let restart = function( startFunction, score ){
+    console.log( startFunction, score );
+    startFunction();
+    pause = false;
+}; // restart game 
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
 let trans = ()=>{
@@ -47,7 +51,7 @@ $(document).ready(function(){
     let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
     //------------------------------ change lang modal
-    $('.lang-trigger').on('click', function(){
+    $('.lang-trigger').on('click', ()=>{
         let langModal = new remote.BrowserWindow({
             width: 400, 
             height: 260,
@@ -67,8 +71,7 @@ $(document).ready(function(){
     });
     
     //------------------------------ change game
-    $('.game-trigger').on('click', function( e ){
-    
+    $('.game-trigger').on('click',  e => {
         sideNavInstance.close();
         $.when( loaderOn() ).then( function(){
             game = null;
@@ -76,6 +79,11 @@ $(document).ready(function(){
             render();
             loaderOff();
         });
+    });
+
+    //----------------------------- close window
+    $('.close-trigger').on('click', ()=>{
+        remote.getCurrentWindow().close();
     });
     render(); // render game view
     loaderOff();
