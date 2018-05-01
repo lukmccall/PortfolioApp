@@ -61,6 +61,7 @@ function init(){
 
 //----------------- frame function
 function animate( time ){
+    console.log("MOVE");
     if( !pause ){
         preRender.fillStyle = "#332532";
         preRender.fillRect(0,0, canvas.width,canvas.height);

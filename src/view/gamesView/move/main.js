@@ -129,20 +129,22 @@ function init(){
     enemies = [];
     for( let i = 0; i < 40; i++ )
         enemies.push( new Enemi() );
+
+    pause = false;
 }
 
 //----------------- frame function
 function animate( time ){
+    console.log("MOVE");
     if( !pause ){
         preRender.fillStyle = "#ECF0F1";
         preRender.fillRect(0,0, canvas.width,canvas.height);
 
         player.animate( keys, time );
         for( let i = 0; i < enemies.length; i++ ){
-            if( enemies[ i ].isCollision( player ) ){
-                pause = true;
+            if( enemies[ i ].isCollision( player ) )
                 restart( init, 0);
-            }
+            
             enemies[i].animate();   
         }
         c.drawImage( preCanvas, 0, 0 );
@@ -159,6 +161,12 @@ $(document).keydown( e => {
 $(document).keyup( e => {
     keys[ e.which ] = false;
 });
+clear = function(){
+    $( window ).off( "resize" );
+    $( document ).off( "keydown" );
+    $( document ).off( "keyup" );
+    
+};
 //------------------ boot
 init();
 requestAnimationFrame(animate);

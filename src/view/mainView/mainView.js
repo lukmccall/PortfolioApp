@@ -7,11 +7,18 @@ const help = remote.require('./src/modules/helpersModule/helpersModule');
 let site = 'move'; // actual frame name 
 let game;   // game scope
 let pause = false;  //  is pause?
-let restart = function( startFunction, score ){
-    console.log( startFunction, score );
-    startFunction();
-    pause = false;
+let restart = function( startFunction, score, success = false ){
+    pause = true;
+    $(".restart-trigger").off("click");
+    $("#restart").removeClass("hidden");
+    $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
+    $('.restart-trigger').on('click', ()=>{
+        console.log("reset");
+        startFunction();
+        $("#restart").addClass("hidden");
+    });
 }; // restart game 
+let clear; // clear function
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
 let trans = ()=>{
@@ -20,6 +27,9 @@ let trans = ()=>{
     });
 }
 let render = ()=>{
+    if( typeof clear === "function" )
+        clear();
+        
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
     trans();
@@ -95,6 +105,5 @@ ipcRenderer.on("lang-change", ( e, lang ) => {
 });
 
 ipcRenderer.on("unpause", (e,p)=>{
-    console.log(p);
     pause = !p;
 });

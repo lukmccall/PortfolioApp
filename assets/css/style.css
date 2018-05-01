@@ -55,7 +55,21 @@ html,body{
     visibility: visible;
 }
 
-.loader.hidden{
+.loader.hidden, #restart.hidden{
     opacity: 0;
     visibility: hidden;
+}
+
+#restart{
+    position: absolute;
+    left: 0;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background: #2980B9;
+
+    opacity: 1;
+    transition: all .6s ease-in-out;
+    visibility: visible;
 }
