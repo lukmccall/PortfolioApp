@@ -3,14 +3,8 @@ const en = {
     menu: "Menu",
     close: "Close",
     gameReset: "Reset",
-    gameRestart: "Restart",
     gameOver: "Game Over",
-    yourScore: "Your Score",
-    optionsHeader: "Options",
-
-    mazeFps: "FPS",
-    mazeCellSize: "Single cell size",
-    mazeAnimationSteps: "Steps per frame"
+    yourScore: "Your Score"
 }
 
 module.exports = en;

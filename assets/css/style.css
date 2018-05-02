@@ -73,8 +73,3 @@ html,body{
     transition: all .6s ease-in-out;
     visibility: visible;
 }
-
-.modal .modal-content{
-    padding: 16px;
-    margin-bottom: 0px;
-}

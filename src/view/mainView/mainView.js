@@ -8,22 +8,15 @@ const help = remote.require('./src/modules/helpersModule/helpersModule');
 let site = 'maze'; // actual frame name 
 let game;   // game scope
 let pause = false;  //  is pause?
-let optionsInstance; // options modal instance
-let restart = function( startFunction, score, type = "gameover" ){ // type = gameover | restart
+let restart = function( startFunction, score, success = false ){
     pause = true;
-    if( type == "gameover" ){
-        $(".restart-trigger").off("click");
-        $("#restart").removeClass("hidden");
-        $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
-        $('.restart-trigger').on('click', ()=>{
-            startFunction();
-            $("#restart").addClass("hidden");
-        });
-    }
-    else if( type == "restart" ){
+    $(".restart-trigger").off("click");
+    $("#restart").removeClass("hidden");
+    $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
+    $('.restart-trigger').on('click', ()=>{
         startFunction();
-        pause = true;
-    }
+        $("#restart").addClass("hidden");
+    });
 }; // restart game 
 let clear; // clear function
 
@@ -43,12 +36,9 @@ let render = ()=>{
     
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
-    
+    trans();
     if( typeof game === "function" )
         game();
-    pause = true;
-    trans();
-    pause = false;
 };
 
 
@@ -70,23 +60,11 @@ $(document).ready(function(){
         onCloseEnd: function(){
             pause = false;
         }
-    };
+    }
     let elem = document.querySelector('.sidenav');
     let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
-
-    //init optionModal
-    let optionsOption = {
-        onOpenStart: function(){
-            pause = true;
-        },
-        onCloseEnd: function(){
-            pause = false;
-        }
-    };
-    elem = document.getElementById('options');
-    optionsInstance = M.Modal.init( elem, optionsOption );
-     //------------------------------ change lang modal
+    //------------------------------ change lang modal
     $('.lang-trigger').on('click', ()=>{
         let langModal = new remote.BrowserWindow({
             width: 400, 

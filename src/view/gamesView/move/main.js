@@ -126,7 +126,6 @@ function resize(){
 let player;
 let enemies = [];
 let score = 0;
-let lastTime;
 function init(){
     resize();
     player = new Player( canvas.width/2,canvas.height - canvas.height/4); // creat player object
@@ -134,9 +133,10 @@ function init(){
     for( let i = 0; i < 40; i++ )
         enemies.push( new Enemi() );
     score = 0;
-    lastTime = 0;
     pause = false;
 }
+
+let lastTime = 0;
 //----------------- frame function
 function animate( time ){
     if( !pause ){
