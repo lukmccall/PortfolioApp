@@ -64,10 +64,10 @@
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo left"><i class="material-icons">cloud</i>Logo</a>
             <ul class="right">
-                <!-- <li><a href="#"><i class="material-icons">search</i></a></li>
-                <li><a href="#"><i class="material-icons">view_module</i></a></li> -->
-                <li><a href="#" class="lang-trigger"><i class="material-icons">language</i></a></li>
+                <!-- <li><a href="#"><i class="material-icons">search</i></a></li> -->
+                <li><a class="modal-trigger" href="#options"><i class="material-icons">live_help</i></a></li> 
                 <li><a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a></li>
+                <li><a href="#" class="lang-trigger"><i class="material-icons">language</i></a></li>
                 <li><a href="#" class="close-trigger"><i class="material-icons">close</i></a></li>
             </ul>
         </div>
@@ -87,6 +87,19 @@
         </div>
     </div>
    
+    <!-- options menu -->
+    <div id="options" class="modal">
+        <div class="modal-content">
+            <h4 class="trans" data-trans="optionsHeader"></h4>
+            <!-- container for options -->
+            <div class="options-content"></div> 
+        </div>
+        
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat trans" data-trans="close"></a>
+        </div> 
+    </div>
+
 </body>
     <!-- 3rd-party libraries include  -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
