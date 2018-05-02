@@ -6,7 +6,7 @@ const gameContainer = document.getElementById("main");
 gameContainer.appendChild(canvas);
 
 //------------------ frame id
-let framId;
+let frameId;
 
 //---------------- offsreen render
 let preCanvas = document.createElement("canvas");
@@ -66,7 +66,7 @@ function createOptions(){
     $('#mazeCellSize').on('change', ()=>{
         if( $( '#mazeCellSize' ).val() >= 3  ){
             cellSizeOpt = $( '#mazeCellSize' ).val();
-            restart(resize,0,"restart");
+            // restart(resize,0,"restart");
         }
     });
     $('#mazeAnimationSteps').on('change', ()=>{
@@ -117,18 +117,18 @@ Cell.prototype.draw = function(){
     let y = this.j * cellSize;
     
     // ------------------------ marks visited
-    if( this.visited ){
-        if( this === cur ) // mark cur
-            preRender.fillStyle = this.curColor;
-        else if( this.path )
-            preRender.fillStyle = this.pathColor;
-        else
-            preRender.fillStyle = this.visitedColor;
-        preRender.fillRect( x, y, cellSize, cellSize );
-    } else { // not visited call
-        preRender.fillStyle = this.bgColor;
-        preRender.fillRect( x, y, cellSize, cellSize );
-    }
+    // if( this.visited ){
+    //     if( this === cur ) // mark cur
+    //         preRender.fillStyle = this.curColor;
+    //     else if( this.path )
+    //         preRender.fillStyle = this.pathColor;
+    //     else
+    //         preRender.fillStyle = this.visitedColor;
+    //     preRender.fillRect( x, y, cellSize, cellSize );
+    // } else { // not visited call
+    //     preRender.fillStyle = this.bgColor;
+    //     preRender.fillRect( x, y, cellSize, cellSize );
+    // }
 
     preRender.strokeStyle = this.wallColor;
 
@@ -219,14 +219,20 @@ function resize(){
 }
 
 let grids = [];
-let cur;
+let draw = [];
 let tracker = [];
-let cellSize
+let cellSize;
 //----------------- init function
 function init(){
+    cancelAnimationFrame( frameId ); 
+    
     grids = [];
     tracker = [];
     cellSize = cellSizeOpt;
+    draw = [];
+
+    //------------------------ fps
+    interval = 1000/fps;
     //------------------------ calc rows,cols number
     rows = Math.floor( canvas.height / cellSize );
     cols = Math.floor( canvas.width / cellSize );
@@ -249,38 +255,55 @@ function init(){
     cur = grids[ help.randInt(0,grids.length-1)];
     cur.visited = true;
     cur.path = true;
-
+    
+    preRender.fillStyle = "#324D5C";
+    preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
     for( let i in grids )
             grids[ i ].draw();
     c.drawImage( preCanvas, startX, startY );
-
+    console.log( cellSize );
     pause = false;
+    // animate();
+    frameId = requestAnimationFrame(animate);
 }
 
 //---------------- animation option
 let now;
 let then = Date.now();
-let interval = 1000/fps;
+let interval;
 let delta;
 //----------------- frame function
-function animate( time ){
-    frameId = requestAnimationFrame(animate);
-
+function animate( time ){ 
+    
     now = Date.now();
     delta = now - then;
 
     if (delta > interval) {
         then = now - (delta % interval);
         if( !pause ){
-            // preRender.fillStyle = "#324D5C";
-            // preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
+            preRender.fillStyle = "#324D5C";
+            preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
             for( let i in grids )
                 grids[ i ].draw();
-            for( let i = 0; i < mazeGeneratorSteps; i++ )
+
+            for( let i = 0; i < mazeGeneratorSteps; i++ ){  
+         
                 mazeGenerator();
+                // pre.draw();
+                // cur.draw();
+            }
+            
+            // draw.push( cur ); 
+            // console.log( draw.length );
+            // while( draw.length > 0 )
+            //     draw.pop().draw();
+            
+          
             c.drawImage( preCanvas, startX, startY );
         }    
     }
+    // cancelAnimationFrame( frameId );
+    frameId = requestAnimationFrame(animate);
 }
 
 //------------------ events
@@ -289,7 +312,7 @@ $( window ).resize(resize);
 //------------------- clear function
 clear = function(){
     $( window ).off( "resize" );
-    window.cancelAnimationFrame( frameId );
+    cancelAnimationFrame( frameId );
     $( canvas ).remove();
     grids = null;
     tracker = null;
@@ -299,6 +322,4 @@ clear = function(){
 //------------------ boot
 createOptions(); // create options 
 resize();
-frameId = requestAnimationFrame(animate);
-
 }

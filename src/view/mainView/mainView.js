@@ -21,6 +21,7 @@ let restart = function( startFunction, score, type = "gameover" ){ // type = gam
         });
     }
     else if( type == "restart" ){
+        console.log("restart");
         startFunction();
         pause = true;
     }

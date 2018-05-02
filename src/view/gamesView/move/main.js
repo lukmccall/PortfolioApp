@@ -173,7 +173,7 @@ clear = function(){
     $( document ).off( "keyup" );
     enemies = null;
     player = null;
-    window.cancelAnimationFrame( frameId );
+    cancelAnimationFrame( frameId );
     $( canvas ).remove();
 };
 //------------------ boot
