@@ -87,6 +87,7 @@ clear = function(){
     $( window ).off( "resize" );
     stars = null;
     window.cancelAnimationFrame( frameId );
+    $( canvas ).remove();
 };
 //------------------ boot
 init();

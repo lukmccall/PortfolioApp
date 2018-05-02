@@ -125,31 +125,34 @@ function resize(){
 
 let player;
 let enemies = [];
+let score = 0;
 function init(){
     resize();
     player = new Player( canvas.width/2,canvas.height - canvas.height/4); // creat player object
     enemies = [];
     for( let i = 0; i < 40; i++ )
         enemies.push( new Enemi() );
-
+    score = 0;
     pause = false;
 }
 
+let lastTime = 0;
 //----------------- frame function
 function animate( time ){
     if( !pause ){
         preRender.fillStyle = "#ECF0F1";
         preRender.fillRect(0,0, canvas.width,canvas.height);
-
         player.animate( keys, time );
         for( let i = 0; i < enemies.length; i++ ){
             if( enemies[ i ].isCollision( player ) )
-                restart( init, Math.floor( time/100 ));
+                restart( init, Math.floor( score ));
             
             enemies[i].animate();   
         }
         c.drawImage( preCanvas, 0, 0 );
+        score += (time - lastTime)/100;
     } 
+    lastTime = time;  
     frameId = requestAnimationFrame(animate);
 }
 
@@ -171,6 +174,7 @@ clear = function(){
     enemies = null;
     player = null;
     window.cancelAnimationFrame( frameId );
+    $( canvas ).remove();
 };
 //------------------ boot
 init();

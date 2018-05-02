@@ -4,7 +4,8 @@ const { ipcRenderer } = require('electron');
 const fs = require('fs');
 const help = remote.require('./src/modules/helpersModule/helpersModule');
 
-let site = 'move'; // actual frame name 
+//------------------------- game controller componets 
+let site = 'maze'; // actual frame name 
 let game;   // game scope
 let pause = false;  //  is pause?
 let restart = function( startFunction, score, success = false ){
@@ -18,6 +19,7 @@ let restart = function( startFunction, score, success = false ){
     });
 }; // restart game 
 let clear; // clear function
+
 //--------------- template render function ----------------/ 
 const lang = remote.require("./src/modules/langModule/langModule");
 let trans = ()=>{
