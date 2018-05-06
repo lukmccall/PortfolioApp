@@ -18,7 +18,7 @@ let startX;
 let startY;
 
 //--------------- game Options
-let cellSizeOpt = 40;
+let cellSizeOpt = 20;
 let mazeGeneratorSteps = 1;
 let fps = 60;
 
@@ -59,22 +59,24 @@ function createOptions(){
     `);
     $('#mazeFps').on('change', ()=>{
         if( $( '#mazeFps' ).val() > 0  ){
-            fps = $( '#mazeFps' ).val();
+            fps = Number($( '#mazeFps' ).val());
             interval = 1000/fps;
         }   
     });
     $('#mazeCellSize').on('change', ()=>{
         if( $( '#mazeCellSize' ).val() >= 3  ){
-            cellSizeOpt = $( '#mazeCellSize' ).val();
-            restart(resize,0,"restart");
+            cellSizeOpt = Number($( '#mazeCellSize' ).val());
         }
     });
     $('#mazeAnimationSteps').on('change', ()=>{
         if( $( '#mazeAnimationSteps' ).val() > 0  )
-            mazeGeneratorSteps = $( '#mazeAnimationSteps' ).val();
+            mazeGeneratorSteps = Number($( '#mazeAnimationSteps' ).val());
     });
     $(".restart-game-trigger").on('click', ()=>{
+        grids = null;
+        tracker = null;
         restart(resize,0,"restart");
+        
         optionsInstance.close();
     });
 }
@@ -220,12 +222,14 @@ function resize(){
 
 let grids = [];
 let cur;
+let draw = [];
 let tracker = [];
-let cellSize
+let cellSize;
 //----------------- init function
 function init(){
     grids = [];
     tracker = [];
+    draw = [];
     cellSize = cellSizeOpt;
     //------------------------ calc rows,cols number
     rows = Math.floor( canvas.height / cellSize );
@@ -274,10 +278,16 @@ function animate( time ){
         if( !pause ){
             // preRender.fillStyle = "#324D5C";
             // preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
-            for( let i in grids )
-                grids[ i ].draw();
-            for( let i = 0; i < mazeGeneratorSteps; i++ )
+            // for( let i in grids )
+            //     grids[ i ].draw();
+            for( let i = 0; i < mazeGeneratorSteps; i++ ){
+                draw.push( cur );
                 mazeGenerator();
+            }
+            draw.push( cur );
+
+            for( let i in draw )
+                draw[ i ].draw();
             c.drawImage( preCanvas, startX, startY );
         }    
     }
@@ -293,6 +303,7 @@ clear = function(){
     $( canvas ).remove();
     grids = null;
     tracker = null;
+    draw = null;
     destroyOptions();
 };
 

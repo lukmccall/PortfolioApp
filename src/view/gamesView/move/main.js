@@ -81,7 +81,7 @@ Enemi.prototype.init = function(){
     this.y = help.randInt(-50,0);
     this.size.width =  help.randInt(20,70);
     this.size.height = help.randInt(20,70);
-    this.vel = help.randInt( 3, 8);
+    this.vel = help.randInt( 3, 6);
 };
 Enemi.prototype.draw = function(){
     preRender.fillStyle = this.color;
