@@ -16,8 +16,8 @@ let rows;
 let cols;
 let startX;
 let startY;
-const cellSize = 20;
-const mazeGeneratorSteps = 1;
+const cellSize = 5;
+const mazeGeneratorSteps = 100;
 let Cell = function( i, j ){
     this.i = i;
     this.j = j;
@@ -154,12 +154,14 @@ function resize(){
 }
 
 let grids = [];
+let draw = [];
 let cur;
 let tracker = [];
 //----------------- init function
 function init(){
     grids = [];
     tracker = [];
+    draw = [];
     //------------------------ calc rows,cols number
     rows = Math.floor( canvas.height / cellSize );
     cols = Math.floor( canvas.width / cellSize );
@@ -182,6 +184,14 @@ function init(){
     cur = grids[ help.randInt(0,grids.length-1)];
     cur.visited = true;
     cur.path = true;
+
+    //----------------------- draw grid
+    preRender.fillStyle = "#324D5C";
+    preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
+    for( let i in grids )
+        grids[ i ].draw();
+    c.drawImage( preCanvas, startX, startY );        
+
     pause = false;
 }
 
@@ -201,12 +211,15 @@ function animate( time ){
     if (delta > interval) {
         then = now - (delta % interval);
         if( !pause ){
-            preRender.fillStyle = "#324D5C";
-            preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
-            for( let i in grids )
-                grids[ i ].draw();
-            for( let i = 0; i < mazeGeneratorSteps; i++ )
+            
+            for( let i = 0; i < mazeGeneratorSteps; i++ ){ 
+                draw.push( cur );
                 mazeGenerator();
+            }
+            draw.push( cur );
+            
+            for( let i in draw )
+                draw[ i ].draw();
             c.drawImage( preCanvas, startX, startY );
         }    
     }
@@ -222,6 +235,7 @@ clear = function(){
     $( canvas ).remove();
     grids = null;
     tracker = null;
+    draw = null;
 };
 
 //------------------ boot
