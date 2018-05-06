@@ -9,15 +9,25 @@ let site = 'maze'; // actual frame name
 let game;   // game scope
 let pause = false;  //  is pause?
 let optionsInstance; // options modal instance
+<<<<<<< HEAD
 let restart = function( startFunction, score, success = false, type = "gameover" ){ // type = gameover | restart
+=======
+let restart = function( startFunction, score, type = "gameover" ){ // type = gameover | restart
+>>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
     pause = true;
-    $(".restart-trigger").off("click");
-    $("#restart").removeClass("hidden");
-    $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
-    $('.restart-trigger').on('click', ()=>{
+    if( type == "gameover" ){
+        $(".restart-trigger").off("click");
+        $("#restart").removeClass("hidden");
+        $("#restart-info").html( lang.trans( "gameOver", remote.getGlobal('lang'))+"<br>" + lang.trans("yourScore", remote.getGlobal("lang"))  + ": " + score );
+        $('.restart-trigger').on('click', ()=>{
+            startFunction();
+            $("#restart").addClass("hidden");
+        });
+    }
+    else if( type == "restart" ){
         startFunction();
-        $("#restart").addClass("hidden");
-    });
+        pause = true;
+    }
 }; // restart game 
 let clear; // clear function
 
@@ -37,12 +47,19 @@ let render = ()=>{
     
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
     if( typeof game === "function" )
         game();
     pause = true;
     trans();
     pause = false;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
 };
 
 
@@ -64,10 +81,14 @@ $(document).ready(function(){
         onCloseEnd: function(){
             pause = false;
         }
-    }
+    };
     let elem = document.querySelector('.sidenav');
     let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
     //init optionModal
     let optionsOption = {
         onOpenStart: function(){
@@ -79,8 +100,12 @@ $(document).ready(function(){
     };
     elem = document.getElementById('options');
     optionsInstance = M.Modal.init( elem, optionsOption );
+<<<<<<< HEAD
     
     //------------------------------ change lang modal
+=======
+     //------------------------------ change lang modal
+>>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
     $('.lang-trigger').on('click', ()=>{
         let langModal = new remote.BrowserWindow({
             width: 400, 
