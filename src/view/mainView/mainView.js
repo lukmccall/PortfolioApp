@@ -9,7 +9,7 @@ let site = 'maze'; // actual frame name
 let game;   // game scope
 let pause = false;  //  is pause?
 let optionsInstance; // options modal instance
-let restart = function( startFunction, score, success = false, type = "gameover" ){ // type = gameover | restart
+let restart = function( startFunction, score, type = "gameover" ){ // type = gameover | restart
     pause = true;
     if( type == "gameover" ){
         $(".restart-trigger").off("click");
@@ -43,6 +43,7 @@ let render = ()=>{
     
     $('#main').html( "<script>"+fs.readFileSync("src/view/gamesView/"+site+"/main.js", 'utf8') +"</script>" ); 
     
+    
     if( typeof game === "function" )
         game();
     pause = true;
@@ -73,6 +74,7 @@ $(document).ready(function(){
     let elem = document.querySelector('.sidenav');
     let sideNavInstance = M.Sidenav.init(elem, sideOption);
 
+
     //init optionModal
     let optionsOption = {
         onOpenStart: function(){
@@ -84,8 +86,7 @@ $(document).ready(function(){
     };
     elem = document.getElementById('options');
     optionsInstance = M.Modal.init( elem, optionsOption );
-    
-    //------------------------------ change lang modal
+     //------------------------------ change lang modal
     $('.lang-trigger').on('click', ()=>{
         let langModal = new remote.BrowserWindow({
             width: 400, 

@@ -126,12 +126,7 @@ function resize(){
 let player;
 let enemies = [];
 let score = 0;
-<<<<<<< HEAD
-let lastTime = 0;
-
-=======
 let lastTime;
->>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
 function init(){
     resize();
     player = new Player( canvas.width/2,canvas.height - canvas.height/4); // creat player object
@@ -142,11 +137,6 @@ function init(){
     lastTime = 0;
     pause = false;
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 01e3c8a44f25e6861f6f222091463180205a6bb8
 //----------------- frame function
 function animate( time ){
     if( !pause ){
