@@ -285,8 +285,8 @@ function animate( time ){
             }
             draw.push( cur );
 
-            for( let i in draw )
-                draw[ i ].draw();
+            while( draw.length > 0 )
+                draw.pop().draw();
             c.drawImage( preCanvas, startX, startY );
         }    
     }
