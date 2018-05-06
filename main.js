@@ -36,6 +36,8 @@ function createWindow () {
     });        
 }
 
+// app.disableHardwareAcceleration();
+
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {

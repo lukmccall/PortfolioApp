@@ -1,3 +1,4 @@
+// Maze Game
 game = function(){
 //---------------- dom elements
 const canvas = document.createElement("canvas");
@@ -18,9 +19,9 @@ let startX;
 let startY;
 
 //--------------- game Options
-let cellSizeOpt = 20;
+let cellSizeOpt = 15;
 let mazeGeneratorSteps = 1;
-let fps = 60;
+let fps = 30;
 
 //--------------- game Options dom elements
 const opt = $('#options .options-content');
@@ -268,8 +269,6 @@ let interval = 1000/fps;
 let delta;
 //----------------- frame function
 function animate( time ){
-    frameId = requestAnimationFrame(animate);
-
     now = Date.now();
     delta = now - then;
 
@@ -291,6 +290,9 @@ function animate( time ){
             c.drawImage( preCanvas, startX, startY );
         }    
     }
+
+    // next frame
+    frameId = requestAnimationFrame(animate);
 }
 
 //------------------ events
@@ -311,5 +313,4 @@ clear = function(){
 createOptions(); // create options 
 resize();
 frameId = requestAnimationFrame(animate);
-
 }

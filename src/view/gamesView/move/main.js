@@ -1,3 +1,4 @@
+// Move Game
 game = function(){
 
 //---------------- dom elements
@@ -13,6 +14,37 @@ let keys = [];
 //---------------- offscreen render
 let preCanvas = document.createElement("canvas");
 let preRender = preCanvas.getContext("2d"); // pre render
+
+//---------------- game options
+let fps = 60;
+
+//--------------- game Options dom elements
+const opt = $('#options .options-content');
+let optWrapper;
+
+function createOptions(){
+    optWrapper = $("<div class='row'></div>"); // create wrapper 
+    $(opt).append( optWrapper );
+    $(optWrapper).append( ` 
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">slow_motion_video</i>
+            <input id="moveFps" type="number" class="validate valid" value="${fps}">
+            <label for="moveFps" class="trans active" data-trans="moveFps"></label>
+        </div> 
+    </div>
+    `);
+    $('#moveFps').on('change', ()=>{
+        if( $( '#moveFps' ).val() > 0  ){
+            fps = Number($( '#moveFps' ).val());
+            interval = 1000/fps;
+        }   
+    });
+}
+
+function destroyOptions(){
+    $( optWrapper ).empty();
+}
 
 let Player = function( x, y){
     this.x = x;
@@ -134,25 +166,40 @@ function init(){
     for( let i = 0; i < 40; i++ )
         enemies.push( new Enemi() );
     score = 0;
-    lastTime = 0;
+    lastTime = null;
     pause = false;
 }
+
+//---------------- animation option
+let now;
+let then = Date.now();
+let interval = 1000/fps;
+let delta;
 //----------------- frame function
 function animate( time ){
-    if( !pause ){
-        preRender.fillStyle = "#ECF0F1";
-        preRender.fillRect(0,0, canvas.width,canvas.height);
-        player.animate( keys, time );
-        for( let i = 0; i < enemies.length; i++ ){
-            if( enemies[ i ].isCollision( player ) )
-                restart( init, Math.floor( score ));
-            
-            enemies[i].animate();   
-        }
-        c.drawImage( preCanvas, 0, 0 );
-        score += (time - lastTime)/100;
-    } 
-    lastTime = time;  
+    if( lastTime == null )
+        lastTime = time;
+    now = Date.now();
+    delta = now - then;
+
+    if (delta > interval) {
+        then = now - (delta % interval);
+        if( !pause ){
+            preRender.fillStyle = "#ECF0F1";
+            preRender.fillRect(0,0, canvas.width,canvas.height);
+            player.animate( keys, time );
+            for( let i = 0; i < enemies.length; i++ ){
+                if( enemies[ i ].isCollision( player ) )
+                    restart( init, Math.floor( score ));
+                
+                enemies[i].animate();   
+            }
+            c.drawImage( preCanvas, 0, 0 );
+            score += (time - lastTime)/100;
+        } 
+        lastTime = time; 
+    }
+    // next frame
     frameId = requestAnimationFrame(animate);
 }
 
@@ -175,9 +222,11 @@ clear = function(){
     player = null;
     window.cancelAnimationFrame( frameId );
     $( canvas ).remove();
+    destroyOptions();
 };
+
 //------------------ boot
+createOptions();
 init();
 frameId = requestAnimationFrame(animate);
-
 }

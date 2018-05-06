@@ -1,4 +1,4 @@
-//---- creat game function ----/
+// Gravity Game
 game = function (){
 
 //---------------- dom elements
@@ -13,6 +13,62 @@ let frameId;
 //---------------- offsreen render
 let preCanvas = document.createElement("canvas");
 let preRender = preCanvas.getContext("2d");
+
+//--------------- game Options
+let fps = 60;
+let starsNumber = 80;
+
+//--------------- game Options dom elements
+const opt = $('#options .options-content');
+let optWrapper;
+
+function createOptions(){
+    optWrapper = $("<div class='row'></div>"); // create wrapper 
+    $(opt).append( optWrapper );
+    $(optWrapper).append( ` 
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">slow_motion_video</i>
+            <input id="gravityFps" type="number" class="validate valid" value="${fps}">
+            <label for="gravityFps" class="trans active" data-trans="gravityFps"></label>
+        </div> 
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">slow_motion_video</i>
+            <input id="starsNumber" type="number" class="validate valid" value="${starsNumber}">
+            <label for="starsNumber" class="trans active" data-trans="starsNumber"></label>
+        </div> 
+    </div>
+    <div class="row center-align valign-wrapper">
+        <div class="col s12">
+            <a class="waves-effect waves-light btn btn-small restart-game-trigger center-block"><i class="material-icons right">replay</i><span class="trans" data-trans="gameRestart"></span></a>
+        </div>
+    </div>
+    `);
+    $('#starsNumber').on('change', ()=>{
+        if( $( '#starsNumber' ).val() > 0  ){
+            starsNumber = Number($( '#starsNumber' ).val());
+        }   
+    });
+    $('#gravityFps').on('change', ()=>{
+        if( $( '#gravityFps' ).val() > 0  ){
+            fps = Number($( '#gravityFps' ).val());
+            interval = 1000/fps;
+        }   
+    });
+    $(".restart-game-trigger").on('click', ()=>{
+        stars = null;
+        restart(init,0,"restart");
+        
+        optionsInstance.close();
+    });
+}
+
+function destroyOptions(){
+    $( optWrapper ).empty();
+}
+
 
 let Star = function(){
     this.init();
@@ -58,24 +114,37 @@ let stars = [];
 //----------------- init function
 function init(){
     resize(); 
-    
-    for( let i = 0; i < 80; i++ ) // creat a lot of stars
+    stars = [];
+    for( let i = 0; i < starsNumber; i++ ) // creat a lot of stars
         stars.push( new Star() );
 
+    frameId = requestAnimationFrame(animate);
     pause = false;
 }
 
+//---------------- animation option
+let now;
+let then = Date.now();
+let interval = 1000/fps;
+let delta;
 //----------------- frame function
 function animate( time ){
-    if( !pause ){
-        preRender.fillStyle = "#332532";
-        preRender.fillRect(0,0, canvas.width,canvas.height);
-        //------------------- animate stars 
-        for( let i in stars )
-            stars[ i ].animate( time );
+    now = Date.now();
+    delta = now - then;
+    if (delta > interval) {
+        then = now - (delta % interval);
+        if( !pause ){
 
-        c.drawImage( preCanvas, 0, 0 );
-    } 
+            preRender.fillStyle = "#332532";
+            preRender.fillRect(0,0, canvas.width,canvas.height);
+            //------------------- animate stars 
+            for( let i in stars )
+                stars[ i ].animate( time );
+
+            c.drawImage( preCanvas, 0, 0 );
+        } 
+    }
+    // next fram
     frameId = requestAnimationFrame(animate);
 }
 
@@ -88,8 +157,9 @@ clear = function(){
     stars = null;
     window.cancelAnimationFrame( frameId );
     $( canvas ).remove();
+    destroyOptions();
 };
 //------------------ boot
+createOptions();
 init();
-frameId = requestAnimationFrame(animate);
 }
