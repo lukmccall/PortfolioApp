@@ -114,11 +114,15 @@ let stars = [];
 //----------------- init function
 function init(){
     resize(); 
+    
+    preRender.fillStyle = "#332532";
+    preRender.fillRect(0,0, canvas.width,canvas.height);
+    c.drawImage( preCanvas, 0, 0 );
+    
     stars = [];
     for( let i = 0; i < starsNumber; i++ ) // creat a lot of stars
         stars.push( new Star() );
 
-    frameId = requestAnimationFrame(animate);
     pause = false;
 }
 
@@ -144,6 +148,7 @@ function animate( time ){
             c.drawImage( preCanvas, 0, 0 );
         } 
     }
+
     // next fram
     frameId = requestAnimationFrame(animate);
 }
@@ -157,9 +162,11 @@ clear = function(){
     stars = null;
     window.cancelAnimationFrame( frameId );
     $( canvas ).remove();
+    $( preCanvas ).remove();
     destroyOptions();
 };
 //------------------ boot
 createOptions();
 init();
+frameId = requestAnimationFrame(animate);
 }

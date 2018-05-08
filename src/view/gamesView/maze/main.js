@@ -250,7 +250,6 @@ function init(){
             grids.push( new Cell( j, i ));
 
     //------------------------- start point
-    //cur = grids[ 0 ];
     cur = grids[ help.randInt(0,grids.length-1)];
     cur.visited = true;
     cur.path = true;
@@ -275,10 +274,6 @@ function animate( time ){
     if (delta > interval) {
         then = now - (delta % interval);
         if( !pause ){
-            // preRender.fillStyle = "#324D5C";
-            // preRender.fillRect(0,0, preCanvas.width,preCanvas.height);
-            // for( let i in grids )
-            //     grids[ i ].draw();
             for( let i = 0; i < mazeGeneratorSteps; i++ ){
                 draw.push( cur );
                 mazeGenerator();
@@ -303,6 +298,7 @@ clear = function(){
     $( window ).off( "resize" );
     window.cancelAnimationFrame( frameId );
     $( canvas ).remove();
+    $( preCanvas ).remove();
     grids = null;
     tracker = null;
     draw = null;

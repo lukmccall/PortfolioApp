@@ -5,7 +5,7 @@ const fs = require('fs');
 const help = remote.require('./src/modules/helpersModule/helpersModule');
 
 //------------------------- game controller componets 
-let site = 'maze'; // actual frame name 
+let site = 'sort'; // actual frame name 
 let game;   // game scope
 let pause = false;  //  is pause?
 let optionsInstance; // options modal instance

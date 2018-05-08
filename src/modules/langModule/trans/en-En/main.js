@@ -10,7 +10,13 @@ const en = {
 
     mazeFps: "FPS",
     mazeCellSize: "Single cell size",
-    mazeAnimationSteps: "Steps per frame"
+    mazeAnimationSteps: "Steps per frame",
+
+    moveFps: "FPS",
+
+    gravityFps: "FPS",
+
+    starsNumber: "Elements number"
 }
 
 module.exports = en;

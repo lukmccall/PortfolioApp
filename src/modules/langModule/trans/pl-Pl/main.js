@@ -10,7 +10,13 @@ const pl = {
 
     mazeFps: "Ilość klatek na sekundę",
     mazeCellSize: "Rozmiar komórki",
-    mazeAnimationSteps: "Ilość kroków na jedną klatkę"
+    mazeAnimationSteps: "Ilość kroków na jedną klatkę",
+
+    moveFps: "Ilość klatek na sekundę",
+
+    gravityFps: "Ilość klatek na sekundę",
+    starsNumber: "Ilość elementów"
+
 }
 
 module.exports = pl;
