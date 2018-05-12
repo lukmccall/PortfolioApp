@@ -6,16 +6,23 @@ const c = canvas.getContext("2d");
 const gameContainer = document.getElementById("main");
 gameContainer.appendChild(canvas);
 
-//------------------ frame id
-let framId;
+//---------------- frame id
+let frameId;
 
+//------------------ setup var
 let elementNumber;
 let elementHeightDiff; 
 let startX;
+let notSolved;
+let alg;
+let step;
 
 //------------------ game options
-let fps = 60;
 let elementWidth = 10;
+let sortMethod = "insert"; // select, insert
+let randomMethod = "shuffle";
+let fps = 10;
+let order = 0; // 0 - ascending, 1 - deascending;
 
 //--------------- game Options dom elements
 const opt = $('#options .options-content');
@@ -93,26 +100,98 @@ let Element = function( h, p ){
 
 Element.prototype.color = "#EFE7BE";
 Element.prototype.borderColor = "#013440";
-Element.prototype.draw = function(){
+Element.prototype.changeColor = "#AB1A25";
+Element.prototype.draw = function( i, type = 0 ){
+    i *= elementWidth;
+
+    // clear prev element
+    preRender.fillStyle = "#002635";
+    preRender.fillRect(i,0,elementWidth,preCanvas.height);
+
+    // draw this element
     preRender.beginPath();
-    preRender.fillStyle = this.color;
-    preRender.rect(this.pos, this.height , elementWidth, preCanvas.height );
+    if( type === 0 )
+        preRender.fillStyle = this.color;
+    else 
+        preRender.fillStyle = this.changeColor;
+    preRender.rect( i , this.height , elementWidth, preCanvas.height );
     preRender.fill();
     preRender.strokeStyle = this.borderColor;
     preRender.stroke();
 }
 
+//---------------- order check function
+function isOrder( element1, element2 ){
+    return ( element1.height <= element2.height && order == 0 ) || ( element1.height >= element2.height && order == 1 ); 
+}
+
+//---------------- random functions
+function shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+//----------------- sort functions
+function insertionSort( step ){
+    if( step >= elementNumber ){ // end of alg
+        notSolved = false;
+        return;
+    }
+
+    let key, j;
+    key = elements[ step ];
+    j = step - 1;
+    actives.push( step );
+    while ( j >= 0 && isOrder( elements[ j ], key ) ){
+        prevs.push( j + 1 );
+        elements[ j + 1 ] = elements[ j ];
+        j = j-1;
+    }
+    elements[ j + 1 ] = key;
+    actives.push( j + 1 );
+}
+
+function selectionSort( step ){
+    if( step >= elementNumber ){ // end of alg
+        notSolved = false;
+        return;
+    }
+    // Find the minimum element in unsorted array
+    let minId = step;
+
+    for (let j = step; j < elementNumber; j++)
+        if ( !isOrder(elements[j], elements[ minId ]) )
+            minId = j;
+
+    [elements[ step ], elements[ minId ]] = [ elements[ minId ], elements[ step ]];
+    actives.push( step );
+    actives.push( minId );
+}
 //---------------- change size
 function resize(){
     canvas.height = $(gameContainer).innerHeight();
     canvas.width = $(gameContainer).innerWidth();  
+
     c.fillStyle = "#002635";
     c.fillRect(0,0,canvas.width,canvas.height);
+    
     init();
 }
 
 let elements = []; 
+let actives = [];
+let prevs = [];
+let stack = [];
 function init(){
+    step = 0;
+    elements = [];
+    actives = [];
+    prevs = [];
+    stack = [];
+
     // calc elements number
     elementNumber = Math.floor( canvas.width / elementWidth );
     elementHeightDiff = canvas.height / elementNumber;
@@ -124,11 +203,44 @@ function init(){
     //------------------------ grid position
     startX = ( canvas.width - preCanvas.width ) / 2;
 
-    for( let i = 0; i < elementNumber; i++ )
-        elements.push( new Element( i * elementHeightDiff, i * elementWidth ) );
+    //------------------------ random elements
+    switch( randomMethod ){
+        case "revers":{
+            for( let i = 0; i < elementNumber; i++ )
+                elements.push( new Element( i * elementHeightDiff, i * elementWidth ) );
+        }
+        break;
+        case "shuffle":{
+            for( let i = 0; i < elementNumber; i++ )
+                elements.push( new Element( i * elementHeightDiff, i * elementWidth ) );
+            elements = shuffle( elements );
+        }
+        break;
+        default:{
+
+        }
+    }
+
+    switch( sortMethod ){
+        case "insert":{
+            alg = insertionSort;
+        }
+        break;
+        case "select":{
+            alg = selectionSort;
+        }
+        break;   
+    }
+
+
+    notSolved = true;
+
+    for( let i in elements )
+        elements[ i ].draw( i );
+    frameId = requestAnimationFrame(animate);
 }
 
-//---------------- animation option
+//----------------- animate options
 let now;
 let then = Date.now();
 let interval = 1000/fps;
@@ -137,20 +249,31 @@ let delta;
 function animate( time ){
     now = Date.now();
     delta = now - then;
-
     if (delta > interval) {
         then = now - (delta % interval);
-        if( !pause ){
-            for( let i in elements )
-                elements[ i ].draw();
+        if( !pause && notSolved){
+            let i;
+            while( prevs.length > 0 ){
+                i = prevs.pop();
+                elements[ i ].draw( i );
+            }
 
-            c.drawImage( preCanvas, startX, 0 );
-        }    
+            alg( step++ ); // one step of alg 
+
+            while( actives.length > 0 ){
+                i = actives.pop();
+                prevs.push( i );
+                elements[ i ].draw( i, 1 );
+            }
+            
+            c.drawImage(preCanvas,0,0);
+        } 
     }
 
-    // next frame
+    // next fram
     frameId = requestAnimationFrame(animate);
 }
+
 
 //------------------ events
 $( window ).resize(resize);
@@ -162,10 +285,14 @@ clear = function(){
     $( canvas ).remove();
     $( preCanvas ).remove();
     destroyOptions();
+
+    elements = null;
+    actives = null;
+    prevs = null;
+    stack = null;
 };
 
 
 //--------------- boot
 resize();
-frameId = requestAnimationFrame(animate);
 }
