@@ -19,7 +19,7 @@ let step;
 
 //------------------ game options
 let elementWidth = 10;
-let sortMethod = "insert"; // select, insert
+let sortMethod = "quick"; // select, insert, bubble, quick
 let randomMethod = "shuffle";
 let fps = 10;
 let order = 0; // 0 - ascending, 1 - deascending;
@@ -159,9 +159,8 @@ function selectionSort( step ){
         notSolved = false;
         return;
     }
-    // Find the minimum element in unsorted array
-    let minId = step;
 
+    let minId = step;
     for (let j = step; j < elementNumber; j++)
         if ( !isOrder(elements[j], elements[ minId ]) )
             minId = j;
@@ -170,6 +169,64 @@ function selectionSort( step ){
     actives.push( step );
     actives.push( minId );
 }
+
+function bubbleSort( step ){
+    if( step >= elementNumber ){ // end of alg
+        notSolved = false;
+        return;
+    }
+
+    for( let i = 0; i < elementNumber - 1 ; i++ )
+        if( isOrder( elements[ i ], elements[ i + 1 ] )){
+            actives.push( i );
+            actives.push( i + 1);
+            [ elements[ i ], elements[ i + 1 ]] = [ elements[ i + 1 ], elements[ i ]];  
+        }
+
+}
+
+function partition(  left,  right ) { // partition for quicSort
+    let i  = left - 1;
+    let pivot = elements[ right ];
+    for( let j = left; j < right; j++ ) 
+        if( !isOrder( elements[ j ], pivot ) ){
+            i++;
+            actives.push( i );
+            actives.push( j );
+            [ elements[ i ], elements[ j ] ] = [ elements[ j ], elements[ i ]];
+        }
+    i++;
+    
+    actives.push( i );
+    actives.push( right );
+    [ elements[ i ], elements[ right ] ] = [ elements[ right ], elements[ i ]];
+    return i; 
+}
+
+function quickSort(){
+        
+    if( stack.length > 0 ) {
+        let pair = stack.pop();        
+        let pivot = partition( pair.a, pair.b );
+        
+        if( pivot - 1 > pair.a )
+            stack.push({
+                a: pair.a,
+                b: pivot - 1
+            });	        
+        
+        if( pivot + 1 < pair.b ) 
+            stack.push({
+                a: pivot + 1,
+                b: pair.b
+            });        
+    } else{ // end of alg
+        notSolved = false;
+        return;
+    }
+    
+}
+
 //---------------- change size
 function resize(){
     canvas.height = $(gameContainer).innerHeight();
@@ -222,14 +279,22 @@ function init(){
     }
 
     switch( sortMethod ){
-        case "insert":{
+        case "insert":
             alg = insertionSort;
-        }
         break;
-        case "select":{
+        case "select":
             alg = selectionSort;
-        }
-        break;   
+        break;
+        case "bubble":
+            alg = bubbleSort;
+        break;
+        case "quick":
+            stack.push({
+                a: 0,
+                b: elementNumber - 1
+            });
+            alg = quickSort;
+        break;
     }
 
 
